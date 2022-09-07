@@ -12,13 +12,37 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.ekalyoncu.timer.R
 import com.ekalyoncu.timer.presentation.ui.main.components.TimeIndicator
+import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen() {
 
+    val duration by remember {
+        mutableStateOf(25 * 60000L)
+    }
+
     var isRunning by remember {
         mutableStateOf(true)
+    }
+
+    var progress by remember {
+        mutableStateOf(1f)
+    }
+
+    var currentTime by remember {
+        mutableStateOf(duration)
+    }
+
+    LaunchedEffect(
+        key1 = currentTime,
+        key2 = isRunning
+    ) {
+        if(currentTime > 0 && isRunning) {
+            delay(1000L)
+            currentTime -= 1000L
+            progress = currentTime / duration.toFloat()
+        }
     }
 
     Scaffold { contentPadding ->
@@ -33,7 +57,9 @@ fun MainScreen() {
                 modifier = Modifier
                     .size(200.dp),
                 isRunning = isRunning,
-                duration = 150000
+                duration = duration,
+                currentTime = currentTime,
+                progress = progress
             )
 
             Row(
@@ -60,7 +86,8 @@ fun MainScreen() {
                     modifier = Modifier
                         .size(48.dp),
                     onClick = {
-                        isRunning = !isRunning
+                        progress = 1f
+                        currentTime = 25 * 60000L
                     }
                 ){
                     Icon(

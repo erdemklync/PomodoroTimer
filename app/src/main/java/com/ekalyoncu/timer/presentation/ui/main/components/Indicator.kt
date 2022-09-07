@@ -30,33 +30,14 @@ import kotlin.math.floor
 @Composable
 fun TimeIndicator(
     modifier: Modifier = Modifier,
-    isRunning: Boolean,
     timeConverter: TimeConverter = TimeConverter(),
-    duration: Long,
+    progress: Float,
+    currentTime: Long,
     stroke: Dp = 36.dp,
 ){
 
-    var progress by remember {
-        mutableStateOf(1f)
-    }
-
     var size by remember {
         mutableStateOf(IntSize.Zero)
-    }
-
-    var currentTime by remember {
-        mutableStateOf(duration)
-    }
-
-    LaunchedEffect(
-        key1 = currentTime,
-        key2 = isRunning
-    ) {
-        if(currentTime > 0 && isRunning) {
-            delay(1000L)
-            currentTime -= 1000L
-            progress = currentTime / duration.toFloat()
-        }
     }
 
     Box(
