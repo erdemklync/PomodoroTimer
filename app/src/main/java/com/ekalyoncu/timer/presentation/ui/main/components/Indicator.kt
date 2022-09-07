@@ -23,12 +23,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ekalyoncu.timer.presentation.theme.Purple40
 import com.ekalyoncu.timer.presentation.theme.Purple80
+import com.ekalyoncu.timer.util.TimeConverter
 import kotlinx.coroutines.delay
 import kotlin.math.floor
 
 @Composable
 fun TimeIndicator(
     modifier: Modifier = Modifier,
+    isRunning: Boolean,
+    timeConverter: TimeConverter = TimeConverter(),
     duration: Long,
     stroke: Dp = 36.dp,
 ){
@@ -43,10 +46,6 @@ fun TimeIndicator(
 
     var currentTime by remember {
         mutableStateOf(duration)
-    }
-
-    var isRunning by remember {
-        mutableStateOf(true)
     }
 
     LaunchedEffect(
@@ -94,24 +93,16 @@ fun TimeIndicator(
 
         val centerText = buildAnnotatedString {
             withStyle(
-                style = SpanStyle(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 24.sp,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer
-                )
+                style = SpanStyle(fontSize = 48.sp)
             ){
-                withStyle(
-                    style = SpanStyle(fontSize = 16.sp)
-                ){
-                    append("%")
-                }
-                withStyle(
-                    style = SpanStyle(fontSize = 24.sp)
-                ){
-                    append("${floor(progress*100).toInt()}")
-                }
+                append(timeConverter.getLeftMinutes(currentTime).toString())
             }
-
+            withStyle(
+                style = SpanStyle(fontSize = 32.sp)
+            ){
+                append(":")
+                append(timeConverter.getLeftSeconds(currentTime).toString())
+            }
         }
 
         Text(

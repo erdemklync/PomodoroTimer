@@ -1,32 +1,77 @@
 package com.ekalyoncu.timer.presentation.ui.main
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.Composable
+import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.ekalyoncu.timer.R
 import com.ekalyoncu.timer.presentation.ui.main.components.TimeIndicator
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen() {
-    Scaffold {
+
+    var isRunning by remember {
+        mutableStateOf(true)
+    }
+
+    Scaffold { contentPadding ->
         Column(
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxSize()
+                .padding(contentPadding),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
-        ) {
+        ){
             TimeIndicator(
                 modifier = Modifier
                     .size(200.dp),
-                duration = 15000
+                isRunning = isRunning,
+                duration = 150000
             )
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 36.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ){
+                FilledTonalIconButton(
+                    modifier = Modifier
+                        .size(48.dp),
+                    onClick = {
+                        isRunning = !isRunning
+                    }
+                ){
+                    Icon(
+                        painter = painterResource(
+                            id = if(isRunning) R.drawable.ui_pause else R.drawable.ui_play
+                        ),
+                        contentDescription = null
+                    )
+                }
+                FilledTonalIconButton(
+                    modifier = Modifier
+                        .size(48.dp),
+                    onClick = {
+                        isRunning = !isRunning
+                    }
+                ){
+                    Icon(
+                        painter = painterResource(
+                            id = R.drawable.ui_stop
+                        ),
+                        contentDescription = null
+                    )
+                }
+            }
+
         }
     }
 }

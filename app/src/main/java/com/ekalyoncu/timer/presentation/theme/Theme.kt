@@ -58,7 +58,7 @@ fun PomodoroTimerTheme(
         SideEffect {
             val window = (view.context as Activity).window
             window.statusBarColor = colorScheme.background.toArgb()
-            getInsetsController(window, view)!!.isAppearanceLightStatusBars = !darkTheme
+            getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
         }
     }
 
